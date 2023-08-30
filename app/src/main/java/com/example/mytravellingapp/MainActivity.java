@@ -13,6 +13,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     Button one;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchActivties(){
-        Intent switchActivity = new Intent(this, IntroActivity.class);
+        Intent switchActivity = new Intent(this, flingAnimation.class);
         startActivity(switchActivity);
     }
 }
