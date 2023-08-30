@@ -26,7 +26,7 @@ public class flingAnimation extends AppCompatActivity{
     private int extraHeight;
 
     ViewGroup mainLayout;
-    ImageView ivBox;
+    ImageView soccerBall;
 
     FlingAnimation flingX;
     FlingAnimation flingY;
@@ -38,18 +38,19 @@ public class flingAnimation extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_fling);
 
         mainLayout = findViewById(R.id.layout_main);
-        ivBox = findViewById(R.id.image_box);
+        soccerBall = (ImageView) findViewById(R.id.soccerBall);
+        soccerBall.setImageResource(R.drawable.soccerballimg);
 
-        flingX = new FlingAnimation(ivBox, DynamicAnimation.TRANSLATION_X);
+        flingX = new FlingAnimation(soccerBall, DynamicAnimation.TRANSLATION_X);
 
-        flingY = new FlingAnimation(ivBox, DynamicAnimation.TRANSLATION_Y);
+        flingY = new FlingAnimation(soccerBall, DynamicAnimation.TRANSLATION_Y);
 
         final GestureDetector gestureDetector = new GestureDetector(this, mGestureListener);
 
-        ivBox.setOnTouchListener(new View.OnTouchListener() {
+        soccerBall.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return gestureDetector.onTouchEvent(event);
@@ -59,8 +60,8 @@ public class flingAnimation extends AppCompatActivity{
         mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                maxTranslationX = mainLayout.getWidth() - ivBox.getWidth();
-                maxTranslationY = mainLayout.getHeight() - ivBox.getHeight();
+                maxTranslationX = mainLayout.getWidth() - soccerBall.getWidth();
+                maxTranslationY = mainLayout.getHeight() - soccerBall.getHeight();
                 Log.d(TAG, "onGlobalLayout: maxTranslationX:" + maxTranslationX + " maxTranslationY:" + maxTranslationY);
                 extraHeight = getPhoneHeight() - mainLayout.getHeight();
                 //As only wanted the first call back, so now remove the listener
@@ -68,12 +69,12 @@ public class flingAnimation extends AppCompatActivity{
             }
         });
 
-        ivBox.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        soccerBall.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                boxWidthHalf = ivBox.getWidth() / 2;
-                boxHeightHalf = ivBox.getHeight() / 2;
-                ivBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                boxWidthHalf = soccerBall.getWidth() / 2;
+                boxHeightHalf = soccerBall.getHeight() / 2;
+                soccerBall.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
         });
 
@@ -82,9 +83,9 @@ public class flingAnimation extends AppCompatActivity{
     private GestureDetector.OnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
         //Constants
-        private static final int MIN_DISTANCE_MOVED = 50;
-        private static final float MIN_TRANSLATION = 0;
-        private static final float FRICTION = 1.1f;
+//        private static final int MIN_DISTANCE_MOVED = 50;
+//        private static final float MIN_TRANSLATION = 0;
+//        private static final float FRICTION = 1.1f;
 
         @Override
         public boolean onScroll(MotionEvent downEvent, MotionEvent moveEvent, float distanceX, float distanceY) {
@@ -112,11 +113,11 @@ public class flingAnimation extends AppCompatActivity{
             cancelFling();
 
             if (e.getRawX() >= boxWidthHalf && e.getRawX() <= (maxTranslationX + boxWidthHalf)) {
-                ivBox.setTranslationX(e.getRawX() - boxWidthHalf);
+                soccerBall.setTranslationX(e.getRawX() - boxWidthHalf);
             }
 
-            if (e.getRawY() >= (ivBox.getHeight()) && e.getRawY() <= (maxTranslationY + ivBox.getHeight() - 20)) {
-                ivBox.setTranslationY(e.getRawY() + extraHeight - boxHeightHalf);
+            if (e.getRawY() >= (soccerBall.getHeight()) && e.getRawY() <= (maxTranslationY + soccerBall.getHeight() - 20)) {
+                soccerBall.setTranslationY(e.getRawY() + extraHeight - boxHeightHalf);
             }
 
             return true;
