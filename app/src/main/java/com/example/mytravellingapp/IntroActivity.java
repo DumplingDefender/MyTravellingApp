@@ -31,11 +31,11 @@ public class IntroActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        if (restorePreData()){
-            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(mainActivity);
-            finish();
-        }
+//        if (restorePreData()){
+//            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+//            startActivity(mainActivity);
+//            finish();
+//        }
 
         setContentView(R.layout.activity_intro);
 
