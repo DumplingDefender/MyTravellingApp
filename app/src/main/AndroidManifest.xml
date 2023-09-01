@@ -17,12 +17,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".flingAnimation">
+        <activity android:name=".flingAnimation" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.ALL_APPS" />
 
                 <category android:name="android.intent.category.ALTERNATIVE" />
             </intent-filter>
+
         </activity>
 
     </application>
