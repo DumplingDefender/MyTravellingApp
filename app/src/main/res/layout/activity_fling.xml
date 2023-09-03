@@ -9,11 +9,19 @@
 
 
     <ImageView
+        android:id="@+id/fieldImg"
+        android:layout_width="1312dp"
+        android:layout_height="473dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="-9dp" />
+
+    <ImageView
         android:id="@+id/soccerBall"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        tools:layout_editor_absoluteX="175dp"
-        tools:layout_editor_absoluteY="523dp" />
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        tools:layout_editor_absoluteX="322dp"
+        tools:layout_editor_absoluteY="338dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

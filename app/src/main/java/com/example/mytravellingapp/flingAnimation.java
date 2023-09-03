@@ -26,7 +26,7 @@ public class flingAnimation extends AppCompatActivity{
     private int extraHeight;
 
     ViewGroup mainLayout;
-    ImageView soccerBall;
+    ImageView soccerBall,field;
 
     FlingAnimation flingX;
     FlingAnimation flingY;
@@ -43,6 +43,10 @@ public class flingAnimation extends AppCompatActivity{
         mainLayout = findViewById(R.id.layout_main);
         soccerBall = (ImageView) findViewById(R.id.soccerBall);
         soccerBall.setImageResource(R.drawable.soccerballimg);
+        field = (ImageView) findViewById(R.id.fieldImg);
+        field.setImageResource(R.drawable.field);
+        soccerBall.setX(1000);
+        soccerBall.setY(700);
 
         flingX = new FlingAnimation(soccerBall, DynamicAnimation.TRANSLATION_X);
 
@@ -112,13 +116,13 @@ public class flingAnimation extends AppCompatActivity{
 
             cancelFling();
 
-            if (e.getRawX() >= boxWidthHalf && e.getRawX() <= (maxTranslationX + boxWidthHalf)) {
-                soccerBall.setTranslationX(e.getRawX() - boxWidthHalf);
-            }
-
-            if (e.getRawY() >= (soccerBall.getHeight()) && e.getRawY() <= (maxTranslationY + soccerBall.getHeight() - 20)) {
-                soccerBall.setTranslationY(e.getRawY() + extraHeight - boxHeightHalf);
-            }
+//            if (e.getRawX() >= boxWidthHalf && e.getRawX() <= (maxTranslationX + boxWidthHalf)) {
+//                soccerBall.setTranslationX(e.getRawX() - boxWidthHalf);
+//            }
+//
+//            if (e.getRawY() >= (soccerBall.getHeight()) && e.getRawY() <= (maxTranslationY + soccerBall.getHeight() - 20)) {
+//                soccerBall.setTranslationY(e.getRawY() + extraHeight - boxHeightHalf);
+//            }
 
             return true;
         }
@@ -175,15 +179,15 @@ public class flingAnimation extends AppCompatActivity{
             return;
         }*/
 
-        flingX.setStartVelocity(velocityX)
-                .setMinValue(FLING_MIN_TRANSLATION) // minimum translationX property
+        flingX.setStartVelocity(velocityX).setMinValue(FLING_MIN_TRANSLATION) // minimum translationX property
                 .setMaxValue(maxTranslationX)  // maximum translationX property
                 .setFriction(FLING_FRICTION)
                 .start();
 
+
         flingY.setStartVelocity(velocityY)
                 .setMinValue(FLING_MIN_TRANSLATION)  // minimum translationY property
-                .setMaxValue(maxTranslationY) // maximum translationY property
+                .setMaxValue(maxTranslationY) //maximum translationY property
                 .setFriction(FLING_FRICTION)
                 .start();
     }
