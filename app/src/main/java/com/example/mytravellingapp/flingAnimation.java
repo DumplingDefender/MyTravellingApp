@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FlingAnimation;
+import androidx.fragment.app.Fragment;
 
 public class flingAnimation extends AppCompatActivity{
 
@@ -35,6 +36,8 @@ public class flingAnimation extends AppCompatActivity{
     private static final float FLING_FRICTION = 0.00001f;
     int boxWidthHalf;
     int boxHeightHalf;
+
+    int yourGoals = 0;
 
 
     CountDownTimer countDownTimer;
@@ -55,7 +58,7 @@ public class flingAnimation extends AppCompatActivity{
 
         soccerBall.setX(1000);
         soccerBall.setY(700);
-
+        sendData();
 
 
         flingX = new FlingAnimation(soccerBall, DynamicAnimation.TRANSLATION_X);
@@ -249,6 +252,7 @@ public class flingAnimation extends AppCompatActivity{
 //        Log.d(TAG,randNumY+"");
 //        goalie.setY(randNumY);
         goalie.setX(randNumX);
+        yourGoals++;
 
         countDownTimer = new CountDownTimer(timeLeftInMills,1000) {
             @Override
@@ -265,8 +269,23 @@ public class flingAnimation extends AppCompatActivity{
 
             }
         }.start();
+        sendData();
     }
 
+    public void sendData(){
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("yourGoals",yourGoals);
+
+        Fragment fragment = new score();
+
+        fragment.setArguments(bundle);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainerView,fragment)
+                .commit();
+    }
 
 
 
