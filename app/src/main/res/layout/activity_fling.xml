@@ -10,18 +10,28 @@
 
     <ImageView
         android:id="@+id/fieldImg"
-        android:layout_width="1312dp"
-        android:layout_height="473dp"
+        android:layout_width="1624dp"
+        android:layout_height="533dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="-9dp" />
 
     <ImageView
+        android:id="@+id/goalieImg"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fieldImg"
+        app:layout_constraintEnd_toEndOf="@+id/fieldImg"
+        app:layout_constraintStart_toStartOf="@+id/fieldImg"
+        app:layout_constraintTop_toTopOf="@+id/fieldImg"
+        app:layout_constraintVertical_bias="0.293" />
+
+    <ImageView
         android:id="@+id/soccerBall"
-        android:layout_width="57dp"
+        android:layout_width="25dp"
         android:layout_height="57dp"
-        tools:layout_editor_absoluteX="322dp"
-        tools:layout_editor_absoluteY="338dp" />
+        tools:layout_editor_absoluteX="313dp"
+        tools:layout_editor_absoluteY="671dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

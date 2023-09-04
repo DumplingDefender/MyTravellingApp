@@ -26,12 +26,12 @@ public class flingAnimation extends AppCompatActivity{
     private int extraHeight;
 
     ViewGroup mainLayout;
-    ImageView soccerBall,field;
+    ImageView soccerBall,field,goalie;
 
     FlingAnimation flingX;
     FlingAnimation flingY;
     private static final float FLING_MIN_TRANSLATION = 0;
-    private static final float FLING_FRICTION = 0.000001f;
+    private static final float FLING_FRICTION = 1f;
     int boxWidthHalf;
     int boxHeightHalf;
 
@@ -45,6 +45,8 @@ public class flingAnimation extends AppCompatActivity{
         soccerBall.setImageResource(R.drawable.soccerballimg);
         field = (ImageView) findViewById(R.id.fieldImg);
         field.setImageResource(R.drawable.field);
+        goalie = (ImageView) findViewById(R.id.goalieImg);
+        goalie.setImageResource(R.drawable.goalie);
         soccerBall.setX(1000);
         soccerBall.setY(700);
 
@@ -82,6 +84,27 @@ public class flingAnimation extends AppCompatActivity{
             }
         });
 
+        flingY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation dynamicAnimation, boolean cancelled, float value, float velocity) {
+                Log.d(TAG, "onAnimationEnd: ");
+                Log.d(TAG, "cancelled: " + cancelled);
+                Log.d(TAG, "value: " + value);
+                Log.d(TAG, "velocity: " + velocity);
+                cancelFling();
+            }
+        });
+
+        flingX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
+            @Override
+            public void onAnimationEnd(DynamicAnimation dynamicAnimation, boolean cancelled, float value, float velocity) {
+                Log.d(TAG, "onAnimationEnd: ");
+                Log.d(TAG, "cancelled: " + cancelled);
+                Log.d(TAG, "value: " + value);
+                Log.d(TAG, "velocity: " + velocity);
+                cancelFling();
+            }
+        });
     }
 
     private GestureDetector.OnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
@@ -136,6 +159,10 @@ public class flingAnimation extends AppCompatActivity{
 
             Log.d(TAG, "onFling: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             Log.d(TAG, "distanceInX : " + distanceInX + "\t" + "distanceInY : " + distanceInY);
+            if (soccerBall.getY() == 197) {
+                cancelFling();
+            }
+
 
             doFling(velocityX, velocityY);
 
@@ -179,18 +206,22 @@ public class flingAnimation extends AppCompatActivity{
             return;
         }*/
 
-        flingX.setStartVelocity(velocityX).setMinValue(FLING_MIN_TRANSLATION) // minimum translationX property
+        flingX.setStartVelocity(velocityX)
+                .setMinValue(FLING_MIN_TRANSLATION) // minimum translationX property
                 .setMaxValue(maxTranslationX)  // maximum translationX property
                 .setFriction(FLING_FRICTION)
                 .start();
 
 
         flingY.setStartVelocity(velocityY)
-                .setMinValue(FLING_MIN_TRANSLATION)  // minimum translationY property
-                .setMaxValue(maxTranslationY) //maximum translationY property
+                .setMinValue(197)  // minimum translationY property
+                .setMaxValue(700) //maximum translationY property
                 .setFriction(FLING_FRICTION)
                 .start();
+
     }
+
+
 
     private int getPhoneHeight() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
