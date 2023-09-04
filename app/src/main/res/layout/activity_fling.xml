@@ -33,5 +33,14 @@
         tools:layout_editor_absoluteX="313dp"
         tools:layout_editor_absoluteY="671dp" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="com.example.mytravellingapp.score"
+        android:layout_width="944dp"
+        android:layout_height="458dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
