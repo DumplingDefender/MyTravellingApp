@@ -4,6 +4,7 @@ import android.os.Bundle;
 //import android.support.animation.DynamicAnimation;
 //import android.support.animation.FlingAnimation;
 //import android.support.v7.app.AppCompatActivity;
+import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -30,11 +31,15 @@ public class flingAnimation extends AppCompatActivity{
 
     FlingAnimation flingX;
     FlingAnimation flingY;
-    private static final float FLING_MIN_TRANSLATION = 0;
-    private static final float FLING_FRICTION = 1f;
+    private static float FLING_MIN_TRANSLATION = 430;
+    private static final float FLING_FRICTION = 0.00001f;
     int boxWidthHalf;
     int boxHeightHalf;
 
+
+    CountDownTimer countDownTimer;
+
+    private long timeLeftInMills = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +52,11 @@ public class flingAnimation extends AppCompatActivity{
         field.setImageResource(R.drawable.field);
         goalie = (ImageView) findViewById(R.id.goalieImg);
         goalie.setImageResource(R.drawable.goalie);
+
         soccerBall.setX(1000);
         soccerBall.setY(700);
+
+
 
         flingX = new FlingAnimation(soccerBall, DynamicAnimation.TRANSLATION_X);
 
@@ -66,7 +74,7 @@ public class flingAnimation extends AppCompatActivity{
         mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                maxTranslationX = mainLayout.getWidth() - soccerBall.getWidth();
+                maxTranslationX = 1770;
                 maxTranslationY = mainLayout.getHeight() - soccerBall.getHeight();
                 Log.d(TAG, "onGlobalLayout: maxTranslationX:" + maxTranslationX + " maxTranslationY:" + maxTranslationY);
                 extraHeight = getPhoneHeight() - mainLayout.getHeight();
@@ -102,9 +110,24 @@ public class flingAnimation extends AppCompatActivity{
                 Log.d(TAG, "cancelled: " + cancelled);
                 Log.d(TAG, "value: " + value);
                 Log.d(TAG, "velocity: " + velocity);
+                if(velocity<0) {
+                    if (soccerBall.getX() <= 430) {
+                        if (velocity > -1100) {
+                            cancelFling();
+                        }
+                    }
+                }
+                if(velocity>0) {
+                    if (soccerBall.getX() >= 1770) {
+                        if (velocity < 1100) {
+                            cancelFling();
+                        }
+                    }
+                }
                 cancelFling();
             }
         });
+
     }
 
     private GestureDetector.OnGestureListener mGestureListener = new GestureDetector.SimpleOnGestureListener() {
@@ -159,9 +182,9 @@ public class flingAnimation extends AppCompatActivity{
 
             Log.d(TAG, "onFling: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             Log.d(TAG, "distanceInX : " + distanceInX + "\t" + "distanceInY : " + distanceInY);
-            if (soccerBall.getY() == 197) {
-                cancelFling();
-            }
+//            if (soccerBall.getY() == 197) {
+//                cancelFling();
+//            }
 
 
             doFling(velocityX, velocityY);
@@ -212,14 +235,38 @@ public class flingAnimation extends AppCompatActivity{
                 .setFriction(FLING_FRICTION)
                 .start();
 
-
         flingY.setStartVelocity(velocityY)
                 .setMinValue(197)  // minimum translationY property
                 .setMaxValue(700) //maximum translationY property
                 .setFriction(FLING_FRICTION)
                 .start();
 
+        //X: 474,1770, 770, 1470
+        //Y: 336, 695,
+        int randNumX = (int) (Math.random()*1200)+450;
+        Log.d(TAG,randNumX+"");
+//        int randNumY = (int) (Math.random()*336)+359;
+//        Log.d(TAG,randNumY+"");
+//        goalie.setY(randNumY);
+        goalie.setX(randNumX);
+
+        countDownTimer = new CountDownTimer(timeLeftInMills,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMills = 1;
+            }
+
+            @Override
+            public void onFinish() {
+                countDownTimer.cancel();
+                soccerBall.setX(1000);
+                soccerBall.setY(700);
+                timeLeftInMills = 3000;
+
+            }
+        }.start();
     }
+
 
 
 
