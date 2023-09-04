@@ -30,8 +30,14 @@ public class score extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    CheckBox checkBox,checkBox2;
-    int yourGoals = 0;
+    CheckBox checkBox,checkBox2,checkBox3,checkBox4,checkBox5,
+            checkBox6,checkBox7,checkBox8,checkBox9,checkBox10;
+    boolean yourGoal1,yourGoal2,yourGoal3,yourGoal4,yourGoal5 = false;
+    boolean opponentGoal1,opponentGoal2,opponentGoal3,opponentGoal4,opponentGoal5 = false;
+
+    int attempts = 0;
+
+    int opAttempts = 0;
 
     public score() {
         // Required empty public constructor
@@ -54,20 +60,122 @@ public class score extends Fragment {
 
         checkBox = view.findViewById(R.id.checkBox);
         checkBox2 = view.findViewById(R.id.checkBox2);
+        checkBox3 = view.findViewById(R.id.checkBox3);
+        checkBox4 = view.findViewById(R.id.checkBox4);
+        checkBox5 = view.findViewById(R.id.checkBox5);
+
+        checkBox6 = view.findViewById(R.id.checkBox6);
+        checkBox7 = view.findViewById(R.id.checkBox7);
+        checkBox8 = view.findViewById(R.id.checkBox8);
+        checkBox9 = view.findViewById(R.id.checkBox9);
+        checkBox10 = view.findViewById(R.id.checkBox10);
 
         if(getArguments()!=null){
-            yourGoals = getArguments().getInt("yourGoals");
+            yourGoal1 = getArguments().getBoolean("yourGoal1");
+            yourGoal2 = getArguments().getBoolean("yourGoal2");
+            yourGoal3 = getArguments().getBoolean("yourGoal3");
+            yourGoal4 = getArguments().getBoolean("yourGoal4");
+            yourGoal5 = getArguments().getBoolean("yourGoal5");
+
+            attempts = getArguments().getInt("attempts");
+
+            opponentGoal1 = getArguments().getBoolean("opponentGoal1");
+            opponentGoal2 = getArguments().getBoolean("opponentGoal2");
+            opponentGoal3 = getArguments().getBoolean("opponentGoal3");
+            opponentGoal4 = getArguments().getBoolean("opponentGoal4");
+            opponentGoal5 = getArguments().getBoolean("opponentGoal5");
+
+            opAttempts = getArguments().getInt("opAttempts");
+
+            if(getArguments().getInt("reset")==0){
+                checkBox.setBackgroundColor(Color.TRANSPARENT);
+                checkBox2.setBackgroundColor(Color.TRANSPARENT);
+                checkBox3.setBackgroundColor(Color.TRANSPARENT);
+                checkBox4.setBackgroundColor(Color.TRANSPARENT);
+                checkBox5.setBackgroundColor(Color.TRANSPARENT);
+
+                checkBox6.setBackgroundColor(Color.TRANSPARENT);
+                checkBox7.setBackgroundColor(Color.TRANSPARENT);
+                checkBox8.setBackgroundColor(Color.TRANSPARENT);
+                checkBox9 .setBackgroundColor(Color.TRANSPARENT);
+                checkBox10.setBackgroundColor(Color.TRANSPARENT);
+
+                checkBox.setChecked(false);
+                checkBox2.setChecked(false);
+                checkBox3.setChecked(false);
+                checkBox4.setChecked(false);
+                checkBox5.setChecked(false);
+
+                checkBox6.setChecked(false);
+                checkBox7.setChecked(false);
+                checkBox8.setChecked(false);
+                checkBox9 .setChecked(false);
+                checkBox10.setChecked(false);
+
+            }
         }
 
-        if(yourGoals>0){
+        if(yourGoal1&&attempts>=1){
             checkBox.setChecked(true);
+        }else if(attempts>=1){
+            checkBox.setBackgroundColor(Color.RED);
         }
-        if(yourGoals>1){
 
+        if(yourGoal2&&attempts>=2){
+            checkBox2.setChecked(true);
+        }else if(attempts>=2){
             checkBox2.setBackgroundColor(Color.RED);
         }
 
-        Log.d(TAG,yourGoals+"");
+        if(yourGoal3&&attempts>=3){
+            checkBox3.setChecked(true);
+        }else if(attempts>=3){
+            checkBox3.setBackgroundColor(Color.RED);
+        }
+
+        if(yourGoal4&&attempts>=4){
+            checkBox4.setChecked(true);
+        }else if(attempts>=4){
+            checkBox4.setBackgroundColor(Color.RED);
+        }
+
+        if(yourGoal5&&attempts>=5){
+            checkBox5.setChecked(true);
+        }else if(attempts>=5){
+            checkBox5.setBackgroundColor(Color.RED);
+        }
+//**************************************************************************
+        if(opponentGoal1&&opAttempts>=1){
+            checkBox6.setChecked(true);
+        }else if(opAttempts>=1){
+            checkBox6.setBackgroundColor(Color.RED);
+        }
+        if(opponentGoal2&&opAttempts>=2){
+            checkBox7.setChecked(true);
+        }else if(opAttempts>=2){
+            checkBox7.setBackgroundColor(Color.RED);
+        }
+
+        if(opponentGoal3&&opAttempts>=3){
+            checkBox8.setChecked(true);
+        }else if(opAttempts>=3){
+            checkBox8.setBackgroundColor(Color.RED);
+        }
+
+        if(opponentGoal4&&opAttempts>=4){
+            checkBox9.setChecked(true);
+        }else if(opAttempts>=4){
+            checkBox9.setBackgroundColor(Color.RED);
+        }
+
+        if(opponentGoal5&&opAttempts>=5){
+            checkBox10.setChecked(true);
+        }else if(opAttempts>=5){
+            checkBox10.setBackgroundColor(Color.RED);
+        }
+
+
+
 
         // Inflate the layout for this fragment
         return view;

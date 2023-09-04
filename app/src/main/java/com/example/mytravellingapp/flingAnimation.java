@@ -1,5 +1,6 @@
 package com.example.mytravellingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 //import android.support.animation.DynamicAnimation;
 //import android.support.animation.FlingAnimation;
@@ -12,7 +13,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.dynamicanimation.animation.DynamicAnimation;
@@ -28,7 +31,9 @@ public class flingAnimation extends AppCompatActivity{
     private int extraHeight;
 
     ViewGroup mainLayout;
-    ImageView soccerBall,field,goalie;
+    ImageView soccerBall,goalie;
+    TextView timer;
+    ImageView field;
 
     FlingAnimation flingX;
     FlingAnimation flingY;
@@ -37,12 +42,26 @@ public class flingAnimation extends AppCompatActivity{
     int boxWidthHalf;
     int boxHeightHalf;
 
-    int yourGoals = 0;
+    boolean yourGoal1,yourGoal2,yourGoal3,yourGoal4,yourGoal5 = false;
 
+    boolean opponentGoal1,opponentGoal2,opponentGoal3,opponentGoal4,opponentGoal5 = false;
+
+    boolean defence = false;
+
+    int make,miss,opMake,opMiss = 0;
+    
 
     CountDownTimer countDownTimer;
 
-    private long timeLeftInMills = 3000;
+    private long timeLeftInMills = 5000;
+    private int attempts = 4;
+    private int opAttempts = 4;
+    boolean shot = false;
+    boolean missed = false;
+    private CountDownTimer countDownTimerD;
+    private boolean tie = false;
+    private boolean reset = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +74,9 @@ public class flingAnimation extends AppCompatActivity{
         field.setImageResource(R.drawable.field);
         goalie = (ImageView) findViewById(R.id.goalieImg);
         goalie.setImageResource(R.drawable.goalie);
-
-        soccerBall.setX(1000);
+        timer = findViewById(R.id.timer);
+        timer.setText("");
+        soccerBall.setX(1095);
         soccerBall.setY(700);
         sendData();
 
@@ -66,6 +86,8 @@ public class flingAnimation extends AppCompatActivity{
         flingY = new FlingAnimation(soccerBall, DynamicAnimation.TRANSLATION_Y);
 
         final GestureDetector gestureDetector = new GestureDetector(this, mGestureListener);
+
+
 
         soccerBall.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -98,13 +120,14 @@ public class flingAnimation extends AppCompatActivity{
         flingY.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
             @Override
             public void onAnimationEnd(DynamicAnimation dynamicAnimation, boolean cancelled, float value, float velocity) {
-                Log.d(TAG, "onAnimationEnd: ");
-                Log.d(TAG, "cancelled: " + cancelled);
-                Log.d(TAG, "value: " + value);
-                Log.d(TAG, "velocity: " + velocity);
-                cancelFling();
+//                Log.d(TAG, "onAnimationEnd: ");
+//                Log.d(TAG, "cancelled: " + cancelled);
+//                Log.d(TAG, "value: " + value);
+//                Log.d(TAG, "velocityYYYYY: " + velocity);
+                flingX.cancel();
             }
         });
+
 
         flingX.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
             @Override
@@ -112,22 +135,63 @@ public class flingAnimation extends AppCompatActivity{
                 Log.d(TAG, "onAnimationEnd: ");
                 Log.d(TAG, "cancelled: " + cancelled);
                 Log.d(TAG, "value: " + value);
-                Log.d(TAG, "velocity: " + velocity);
-                if(velocity<0) {
-                    if (soccerBall.getX() <= 430) {
-                        if (velocity > -1100) {
-                            cancelFling();
+                Log.d(TAG, "velocityXXXXXXX: " + velocity);
+                Log.d(TAG, "XXXXX: " + soccerBall.getX());
+                int velocityInt = (int)  velocity;
+                if(velocityInt<0) {
+                    if (value <= 430) {
+                        if (velocityInt < -7000) {
+                            missed = true;
                         }
                     }
                 }
-                if(velocity>0) {
-                    if (soccerBall.getX() >= 1770) {
-                        if (velocity < 1100) {
-                            cancelFling();
+                if(velocityInt>0) {
+                    if (value >= 1770) {
+                        if (velocityInt > 7000) {
+                            missed = true;
                         }
                     }
                 }
                 cancelFling();
+            }
+        });
+
+        field.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(defence) {
+                    goalie.setX(event.getRawX());
+//                    goalie.setY(event.getRawY());
+                    if(!shot) {
+                        shot = true;
+                        countDownTimer = new CountDownTimer(timeLeftInMills, 1000) {
+                            @Override
+                            public void onTick(long l) {
+                                timeLeftInMills = l;
+                                timer.setText(timeLeftInMills / 1000 + "");
+                            }
+
+                            @Override
+                            public void onFinish() {
+                                countDownTimer.cancel();
+                                soccerBall.setX(1095);
+                                soccerBall.setY(700);
+                                timeLeftInMills = 5000;
+                                timer.setText("");
+
+                                float randVY = (float)(Math.random()*1000)+1500;
+                                float randVX = (float)(Math.random()*1500)+6000;
+                                int negative = (int) (Math.random()*2);
+                                if(negative==0){
+                                    doFlingOp(-randVX,-randVX);
+                                }else{
+                                    doFlingOp(randVX,-randVY);
+                                }
+                            }
+                        }.start();
+                    }
+                }
+                return false;
             }
         });
 
@@ -163,7 +227,7 @@ public class flingAnimation extends AppCompatActivity{
             Log.d(TAG, "RawX: " + e.getRawX() + " X: " + e.getX());
             Log.d(TAG, "RawY: " + e.getRawY() + " NewY: " + (e.getRawY()) + " Y: " + e.getY());
 
-            cancelFling();
+//            cancelFling();
 
 //            if (e.getRawX() >= boxWidthHalf && e.getRawX() <= (maxTranslationX + boxWidthHalf)) {
 //                soccerBall.setTranslationX(e.getRawX() - boxWidthHalf);
@@ -178,9 +242,11 @@ public class flingAnimation extends AppCompatActivity{
 
         @Override
         public boolean onFling(MotionEvent downEvent, MotionEvent moveEvent, float velocityX, float velocityY) {
-            //downEvent : when user puts his finger down on the view
-            //moveEvent : when user lifts his finger at the end of the movement
-            float distanceInX = Math.abs(moveEvent.getRawX() - downEvent.getRawX());
+            if (soccerBall.getX() == 1095&& soccerBall.getY() == 700&&!defence){
+
+                //downEvent : when user puts his finger down on the view
+                //moveEvent : when user lifts his finger at the end of the movement
+                float distanceInX = Math.abs(moveEvent.getRawX() - downEvent.getRawX());
             float distanceInY = Math.abs(moveEvent.getRawY() - downEvent.getRawY());
 
             Log.d(TAG, "onFling: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
@@ -210,7 +276,9 @@ public class flingAnimation extends AppCompatActivity{
                         .start();
             }*/
 
-            return true;
+                return true;
+            }
+            return false;
         }
     };
 
@@ -222,11 +290,59 @@ public class flingAnimation extends AppCompatActivity{
         if (flingY.isRunning()) {
             flingY.cancel();
         }
+        if(soccerBall.getX()>=goalie.getX()-200&&soccerBall.getX()<=goalie.getX()+400){
+            missed =true;
+        }
+        boolean goal = !missed;
+        if(!defence) {
+            if (attempts == 1) {
+                yourGoal1 = goal;
+            } else if (attempts == 2) {
+                yourGoal2 = goal;
+            } else if (attempts == 3) {
+                yourGoal3 = goal;
+            } else if (attempts == 4) {
+                yourGoal4 = goal;
+            } else if (attempts == 5) {
+                yourGoal5 = goal;
+            }
+
+            if(goal){
+                make++;
+            }else{
+                miss++;
+            }
+        }else{
+
+            if (opAttempts == 1) {
+                opponentGoal1 = goal;
+            } else if (opAttempts == 2) {
+                opponentGoal2 = goal;
+            } else if (opAttempts == 3) {
+                opponentGoal3 = goal;
+            } else if (opAttempts == 4) {
+                opponentGoal4 = goal;
+            } else if (opAttempts == 5) {
+                opponentGoal5 = goal;
+            }
+
+            if(goal){
+                opMake++;
+            }else{
+                opMiss++;
+            }
+        }
+        missed =false;
+        sendData();
+        defence = !defence;
+
+
+
     }
 
     private void doFling(float velocityX, float velocityY) {
         Log.d(TAG, "doFling: velocityX: " + velocityX + " velocityY:" + velocityY);
-        cancelFling();
+//        cancelFling();
 
         /*if (velocityX <= 0 || velocityY <= 0) {
             return;
@@ -252,31 +368,143 @@ public class flingAnimation extends AppCompatActivity{
 //        Log.d(TAG,randNumY+"");
 //        goalie.setY(randNumY);
         goalie.setX(randNumX);
-        yourGoals++;
+        attempts++;
+
 
         countDownTimer = new CountDownTimer(timeLeftInMills,1000) {
             @Override
             public void onTick(long l) {
-                timeLeftInMills = 1;
+                timeLeftInMills = l;
+                timer.setText(timeLeftInMills/1000+"");
             }
 
             @Override
             public void onFinish() {
                 countDownTimer.cancel();
-                soccerBall.setX(1000);
+                soccerBall.setX(1095);
                 soccerBall.setY(700);
-                timeLeftInMills = 3000;
-
+                timeLeftInMills = 5000;
+                timer.setText("");
             }
         }.start();
-        sendData();
+
+    }
+
+    private void doFlingOp(float velocityX, float velocityY) {
+        Log.d(TAG, "doFling: velocityX: " + velocityX + " velocityY:" + velocityY);
+//        cancelFling();
+
+        /*if (velocityX <= 0 || velocityY <= 0) {
+            return;
+        }*/
+
+        flingX.setStartVelocity(velocityX)
+                .setMinValue(FLING_MIN_TRANSLATION) // minimum translationX property
+                .setMaxValue(maxTranslationX)  // maximum translationX property
+                .setFriction(FLING_FRICTION)
+                .start();
+
+        flingY.setStartVelocity(velocityY)
+                .setMinValue(197)  // minimum translationY property
+                .setMaxValue(700) //maximum translationY property
+                .setFriction(FLING_FRICTION)
+                .start();
+
+        //X: 474,1770, 770, 1470
+        //Y: 336, 695,
+//        int randNumY = (int) (Math.random()*336)+359;
+//        Log.d(TAG,randNumY+"");
+//        goalie.setY(randNumY);
+        opAttempts++;
+//        defence = false;
+
+
+        countDownTimer = new CountDownTimer(timeLeftInMills,1000) {
+            @Override
+            public void onTick(long l) {
+                timeLeftInMills = l;
+                timer.setText(timeLeftInMills/1000+"");
+            }
+
+            @Override
+            public void onFinish() {
+                countDownTimer.cancel();
+                soccerBall.setX(1095);
+                soccerBall.setY(700);
+                timeLeftInMills = 5000;
+                timer.setText("");
+                shot = false;
+            }
+        }.start();
+
     }
 
     public void sendData(){
+
         Bundle bundle = new Bundle();
+        bundle.putInt("reset",1);
+        if(!tie) {
+            if (5 - make < opMiss) {
+                Intent switchActivity = new Intent(this, MainActivity.class);
+                startActivity(switchActivity);
+                //win
+            } else if (5 - opMake < miss) {
+                Intent switchActivity = new Intent(this, MainActivity.class);
+                startActivity(switchActivity);
+                //lose
+            } else if (attempts >= 5 && opAttempts >= 5) {
+                tie = true;
+                reset =true;
+                sendData();
+            }
+        }else{
+            if(reset) {
+                yourGoal1 = false;
+                yourGoal2 = false;
+                yourGoal3 = false;
+                yourGoal4 = false;
+                yourGoal5 = false;
+                attempts = 0;
+                opAttempts = 0;
+                opponentGoal1 = false;
+                opponentGoal2 = false;
+                opponentGoal3 = false;
+                opponentGoal4 = false;
+                opponentGoal5 = false;
+                bundle.putInt("reset", 0);
+                reset = false;
+            }
+            if(attempts==opAttempts){
+                if(make>opMake){
+                    Intent switchActivity = new Intent(this, MainActivity.class);
+                    startActivity(switchActivity);
+                    //win
+                }else if(make<opMake){
+                    Intent switchActivity = new Intent(this, MainActivity.class);
+                    startActivity(switchActivity);
+                    //lose
+                }else if (attempts >= 5 && opAttempts >= 5) {
+                    tie = true;
+                    reset =true;
+                }
+            }
 
-        bundle.putInt("yourGoals",yourGoals);
+        }
 
+
+
+        bundle.putBoolean("yourGoal1",yourGoal1);
+        bundle.putBoolean("yourGoal2",yourGoal2);
+        bundle.putBoolean("yourGoal3",yourGoal3);
+        bundle.putBoolean("yourGoal4",yourGoal4);
+        bundle.putBoolean("yourGoal5",yourGoal5);
+        bundle.putInt("attempts",attempts);
+        bundle.putBoolean("opponentGoal1",opponentGoal1);
+        bundle.putBoolean("opponentGoal2",opponentGoal2);
+        bundle.putBoolean("opponentGoal3",opponentGoal3);
+        bundle.putBoolean("opponentGoal4",opponentGoal4);
+        bundle.putBoolean("opponentGoal5",opponentGoal5);
+        bundle.putInt("opAttempts",opAttempts);
         Fragment fragment = new score();
 
         fragment.setArguments(bundle);
@@ -285,6 +513,7 @@ public class flingAnimation extends AppCompatActivity{
                 .beginTransaction()
                 .replace(R.id.fragmentContainerView,fragment)
                 .commit();
+
     }
 
 
