@@ -26,11 +26,11 @@ public class IntroActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        super.onCreate(savedInstanceState);
 //        if (restorePreData()){
 //            Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
 //            startActivity(mainActivity);
@@ -47,9 +47,10 @@ public class IntroActivity extends AppCompatActivity {
 
         //Data
         final List<ScreenItem> mList = new ArrayList<>();
-        mList.add(new ScreenItem("Plan Your Trip", "Choose your destination, plan your trip.\nPick the best place to your holiday", R.drawable.travel_page_one));
-        mList.add(new ScreenItem("Select the Date", "Select the day, book your ticket. We give\nthe best price for you", R.drawable.travel_page_two));
-        mList.add(new ScreenItem("Enjoy Your Trip", "Enjoy your holiday! Take a photo, share to\nthe world and tag me", R.drawable.travel_page_three));
+        mList.add(new ScreenItem("How to Take a Penalty", "Simply flick your finger while holding the ball in the direction you want it to go." +
+                "\nDont Flick to hard", R.drawable.soccerballimg));
+        mList.add(new ScreenItem("How to be a Goalie", "Tap on the screen for the countdown to begin.\ntap where you want to save it", R.drawable.goalie));
+        mList.add(new ScreenItem("Scoring", "Best out of 5.\nIf tied go to sudden death", R.drawable.referee));
 
         //Setup viewPager
         screenPager = findViewById(R.id.screen_viewpager);
@@ -90,7 +91,7 @@ public class IntroActivity extends AppCompatActivity {
         btnGetStarted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                Intent mainActivity = new Intent(getApplicationContext(), flingAnimation.class);
                 startActivity(mainActivity);
                 savePrefsData();
                 finish();
