@@ -50,7 +50,7 @@ public class IntroActivity extends AppCompatActivity {
         mList.add(new ScreenItem("How to Take a Penalty", "Simply flick your finger while holding the ball in the direction you want it to go." +
                 "\nDont Flick to hard", R.drawable.soccerballimg));
         mList.add(new ScreenItem("How to be a Goalie", "Tap on the screen for the countdown to begin.\ntap where you want to save it", R.drawable.goalie));
-        mList.add(new ScreenItem("Scoring", "Best out of 5.\nIf tied go to sudden death", R.drawable.referee));
+        mList.add(new ScreenItem("Scoring", "Best out of 5.\nIf tied go to sudden death", R.drawable.field));
 
         //Setup viewPager
         screenPager = findViewById(R.id.screen_viewpager);

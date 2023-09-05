@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,9 +52,9 @@ public class flingAnimation extends AppCompatActivity{
 
     CountDownTimer countDownTimer;
 
-    private long timeLeftInMills = 5000;
-    private int attempts = 4;
-    private int opAttempts = 4;
+    private long timeLeftInMills = 2000;
+    private int attempts = 0;
+    private int opAttempts = 0;
     boolean shot = false;
     boolean missed = false;
     private CountDownTimer countDownTimerD;
@@ -176,7 +175,7 @@ public class flingAnimation extends AppCompatActivity{
                                 countDownTimer.cancel();
                                 soccerBall.setX(1095);
                                 soccerBall.setY(700);
-                                timeLeftInMills = 5000;
+                                timeLeftInMills = 2000;
                                 timer.setText("");
 
                                 float randVY = (float)(Math.random()*1000)+1500;
@@ -383,7 +382,7 @@ public class flingAnimation extends AppCompatActivity{
                 countDownTimer.cancel();
                 soccerBall.setX(1095);
                 soccerBall.setY(700);
-                timeLeftInMills = 5000;
+                timeLeftInMills = 2000;
                 timer.setText("");
             }
         }.start();
@@ -431,7 +430,7 @@ public class flingAnimation extends AppCompatActivity{
                 countDownTimer.cancel();
                 soccerBall.setX(1095);
                 soccerBall.setY(700);
-                timeLeftInMills = 5000;
+                timeLeftInMills = 2000;
                 timer.setText("");
                 shot = false;
             }
@@ -445,11 +444,11 @@ public class flingAnimation extends AppCompatActivity{
         bundle.putInt("reset",1);
         if(!tie) {
             if (5 - make < opMiss) {
-                Intent switchActivity = new Intent(this, MainActivity.class);
+                Intent switchActivity = new Intent(this, victoryScreen.class);
                 startActivity(switchActivity);
                 //win
             } else if (5 - opMake < miss) {
-                Intent switchActivity = new Intent(this, MainActivity.class);
+                Intent switchActivity = new Intent(this, lossScreen.class);
                 startActivity(switchActivity);
                 //lose
             } else if (attempts >= 5 && opAttempts >= 5) {
@@ -476,11 +475,11 @@ public class flingAnimation extends AppCompatActivity{
             }
             if(attempts==opAttempts){
                 if(make>opMake){
-                    Intent switchActivity = new Intent(this, MainActivity.class);
+                    Intent switchActivity = new Intent(this, victoryScreen.class);
                     startActivity(switchActivity);
                     //win
                 }else if(make<opMake){
-                    Intent switchActivity = new Intent(this, MainActivity.class);
+                    Intent switchActivity = new Intent(this, lossScreen.class);
                     startActivity(switchActivity);
                     //lose
                 }else if (attempts >= 5 && opAttempts >= 5) {
